@@ -156,6 +156,7 @@ include_directories(include ${catkin_INCLUDE_DIRS} ${EIGEN3_INCLUDE_DIRS})
 ## Declare a C++ library
 add_library(geonav_transform
    src/geonav_transform.cpp
+   src/geonav_utilities.cpp
 )
 
 ## Add cmake target dependencies of the library

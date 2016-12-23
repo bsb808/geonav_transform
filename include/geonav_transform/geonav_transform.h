@@ -20,19 +20,6 @@
 namespace GeonavTransform
 {
 
-  // from filter_common.h
-  //! @brief Pose and twist messages each
-  //! contain six variables
-  const int POSE_SIZE = 6;
-  const int TWIST_SIZE = 6;
-  const int POSITION_SIZE = 3;
-  const int ORIENTATION_SIZE = 3;
-  const int ACCELERATION_SIZE = 3;
-  
-  //! @brief Common variables
-  const double PI = 3.141592653589793;
-  const double TAU = 6.283185307179587;
-
 class GeonavTransform
 {
   public:
@@ -52,6 +39,11 @@ class GeonavTransform
     //! @brief Computes the transform from the UTM frame to the odom frame
     //!
     void computeTransform();
+
+    //! @brief Sets datum values
+    //! yaw is ENU
+    //!
+    bool setDatum(double lat, double lon, tf2::Quaternion q);
 
     //! @brief Given the pose of the navsat sensor in the UTM frame, removes the offset from the vehicle's centroid
     //! and returns the UTM-frame pose of said centroid.
@@ -199,11 +191,6 @@ class GeonavTransform
     //! @brief Latest IMU orientation
     //!
     tf2::Transform transform_world_pose_;
-
-    //! @brief Whether we get our datum from the first GPS message or from the set_datum
-    //! service/parameter
-    //!
-    bool use_manual_datum_;
 
     //! @brief Whether we get the transform's yaw from the odometry or IMU source
     //!
