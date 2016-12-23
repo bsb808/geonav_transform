@@ -1,39 +1,6 @@
-/*
- * Copyright (c) 2014, 2015, 2016, Charles River Analytics, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- * 1. Redistributions of source code must retain the above copyright
- * notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following
- * disclaimer in the documentation and/or other materials provided
- * with the distribution.
- * 3. Neither the name of the copyright holder nor the names of its
- * contributors may be used to endorse or promote products derived
- * from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- * COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- */
 
 #ifndef GEONAV_TRANSFORM_GEONAV_TRANSFORM_H
 #define GEONAV_TRANSFORM_GEONAV_TRANSFORM_H
-
-#include <robot_localization/SetDatum.h>
 
 #include <ros/ros.h>
 
@@ -50,19 +17,32 @@
 
 #include <string>
 
-namespace RobotLocalization
+namespace GeonavTransform
 {
 
-class NavSatTransform
+  // from filter_common.h
+  //! @brief Pose and twist messages each
+  //! contain six variables
+  const int POSE_SIZE = 6;
+  const int TWIST_SIZE = 6;
+  const int POSITION_SIZE = 3;
+  const int ORIENTATION_SIZE = 3;
+  const int ACCELERATION_SIZE = 3;
+  
+  //! @brief Common variables
+  const double PI = 3.141592653589793;
+  const double TAU = 6.283185307179587;
+
+class GeonavTransform
 {
   public:
     //! @brief Constructor
     //!
-    NavSatTransform();
+    GeonavTransform();
 
     //! @brief Destructor
     //!
-    ~NavSatTransform();
+    ~GeonavTransform();
 
     //! @brief Main run loop
     //!
@@ -72,10 +52,6 @@ class NavSatTransform
     //! @brief Computes the transform from the UTM frame to the odom frame
     //!
     void computeTransform();
-
-    //! @brief Callback for the datum service
-    //!
-    bool datumCallback(robot_localization::SetDatum::Request& request, robot_localization::SetDatum::Response&);
 
     //! @brief Given the pose of the navsat sensor in the UTM frame, removes the offset from the vehicle's centroid
     //! and returns the UTM-frame pose of said centroid.
@@ -233,6 +209,7 @@ class NavSatTransform
     //!
     bool use_odometry_yaw_;
 
+
     //! @brief Used for publishing the static world_frame->utm transform
     //!
     tf2_ros::StaticTransformBroadcaster utm_broadcaster_;
@@ -273,6 +250,6 @@ class NavSatTransform
     bool zero_altitude_;
 };
 
-}  // namespace RobotLocalization
+}  // namespace GeonavTransform
 
-#endif  // ROBOT_LOCALIZATION_NAVSAT_TRANSFORM_H
+#endif  // GEONAV_TRANSFORM_NAVSAT_TRANSFORM_H

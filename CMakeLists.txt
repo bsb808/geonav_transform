@@ -6,6 +6,18 @@ project(geonav_transform)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  diagnostic_msgs
+  diagnostic_updater
+  geographic_msgs
+  geometry_msgs
+  message_filters
+  message_generation
+  nav_msgs
+  sensor_msgs
+  std_msgs
+  tf2
+  tf2_geometry_msgs
+  tf2_ros
 )
 
 # Attempt to find Eigen using its own CMake module.
@@ -116,7 +128,19 @@ add_definitions(-DEIGEN_NO_DEBUG -DEIGEN_MPL2_ONLY)
 catkin_package(
    INCLUDE_DIRS include
    LIBRARIES geonav_transform
-   CATKIN_DEPENDS roscpp
+   CATKIN_DEPENDS 
+    roscpp
+    cmake_modules
+    diagnostic_msgs
+    diagnostic_updater
+    geographic_msgs
+    geometry_msgs
+    nav_msgs
+    sensor_msgs
+    std_msgs
+    tf2
+    tf2_geometry_msgs
+    tf2_ros
    DEPENDS ${EIGEN_PACKAGE}
 )
 
@@ -151,7 +175,7 @@ target_link_libraries(geonav_transform
    ${catkin_LIBRARIES} 
    ${EIGEN3_LIBRARIES}
 )
-target_link_libraries(geonav_transform_node
+target_link_libraries(geonav_transform_node geonav_transform
    ${catkin_LIBRARIES} 
  )
 

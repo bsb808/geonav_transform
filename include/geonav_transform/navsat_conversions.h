@@ -328,6 +328,6 @@ static inline void UTMtoLL(const double UTMNorthing, const double UTMEasting,
 }
 
 }  // namespace NavsatConversions
-}  // namespace RobotLocalization
+}  // namespace GeonavTransform
 
 #endif  // ROBOT_LOCALIZATION_NAVSAT_CONVERSIONS_H
