@@ -58,7 +58,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-namespace GeonavTransfrom
+namespace GeonavTransform
 {
 namespace NavsatConversions
 {

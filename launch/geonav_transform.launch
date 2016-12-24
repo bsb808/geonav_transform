@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- For setting debug level to debug -->
+  <env name="ROSCONSOLE_CONFIG_FILE" 
+       value="$(find geonav_transform)/config/custom_rosconsole.conf"/>
+
+  <node pkg="geonav_transform" type="geonav_transform_node" name="geonav_transform_node" clear_params="true" output="screen">
+    <!-- Datum as latitude, longitude [decimal deg.], yaw [ENU, degrees] -->
+    <rosparam param="datum">[36.6137, -121.912, 0.0]</rosparam>
+  </node>
+
+  <!--
+  <node name="microstrain_3dm_gx5_45" 
+  pkg="microstrain_3dm_gx5_45" 
+  type="microstrain_3dm_gx5_45" output="screen">
+    <param name="port" value="/dev/ttyACM0" type="str" />
+    <param name="baudrate" value="115200" type="int" />
+    <param name="gps_frame_id" value="world" type=" str" />
+    <param name="imu_frame_id" value="imu" type="str" />
+    <param name="nav_frame_id" value="" type="str" />
+    <param name="gps_rate" value="4" type="int" />
+    <param name="imu_rate" value="10" type="int" />
+    <param name="nav_rate" value="10" type="int" />
+    <param name="dynamics_mode" value="1" type="int" />
+    <param name="declination_source" value="2" type="int" />
+    <param name="declination" value="0.23" type="double" />
+  </node>
+  -->
+
+
+  
+
+</launch>

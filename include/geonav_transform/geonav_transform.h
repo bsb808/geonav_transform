@@ -38,12 +38,12 @@ class GeonavTransform
   private:
     //! @brief Computes the transform from the UTM frame to the odom frame
     //!
-    void computeTransform();
+    void computeTransformOdom2Utm();
 
     //! @brief Sets datum values
     //! yaw is ENU
     //!
-    bool setDatum(double lat, double lon, tf2::Quaternion q);
+    bool setDatum(double lat, double lon, double alt, tf2::Quaternion q);
 
     //! @brief Given the pose of the navsat sensor in the UTM frame, removes the offset from the vehicle's centroid
     //! and returns the UTM-frame pose of said centroid.
@@ -59,20 +59,11 @@ class GeonavTransform
                                  tf2::Transform &robot_odom_pose,
                                  const ros::Time &transform_time);
 
-    //! @brief Callback for the GPS fix data
-    //! @param[in] msg The NavSatFix message to process
-    //!
-    void gpsFixCallback(const sensor_msgs::NavSatFixConstPtr& msg);
 
-    //! @brief Callback for the IMU data
-    //! @param[in] msg The IMU message to process
-    //!
-    void imuCallback(const sensor_msgs::ImuConstPtr& msg);
-
-    //! @brief Callback for the odom data
+    //! @brief Callback for the geo nav odom data
     //! @param[in] msg The odometry message to process
     //!
-    void odomCallback(const nav_msgs::OdometryConstPtr& msg);
+    void navOdomCallback(const nav_msgs::OdometryConstPtr& msg);
 
     //! @brief Converts the odometry data back to GPS and broadcasts it
     //! @param[out] filtered_gps The NavSatFix message to prepare
@@ -104,9 +95,9 @@ class GeonavTransform
     //!
     bool broadcast_utm_transform_;
 
-    //! @brief The frame_id of the GPS message (specifies mounting location)
+    //! @brief The frame_id of the NAV message (specifies mounting location)
     //!
-    std::string gps_frame_id_;
+    std::string nav_frame_id_;
 
     //! @brief Timestamp of the latest good GPS message
     //!
@@ -119,6 +110,10 @@ class GeonavTransform
     //! We only want to compute and broadcast our transformed GPS data if it's new. This variable keeps track of that.
     //!
     bool gps_updated_;
+
+    //! @brief Whether or not the datam was set
+    //!
+    bool has_datum_;
 
     //! @brief Whether or not the GPS fix is usable
     //!
@@ -139,10 +134,12 @@ class GeonavTransform
     //! @brief Covariance for most recent GPS/UTM data
     //!
     Eigen::MatrixXd latest_utm_covariance_;
+    Eigen::MatrixXd geonav_utm_covariance_;
 
     //! @brief Latest GPS data, stored as UTM coords
     //!
     tf2::Transform latest_utm_pose_;
+    tf2::Transform transform_utm2nav_;
 
     //! @brief Latest odometry pose data
     //!
@@ -188,6 +185,7 @@ class GeonavTransform
     //!
     tf2::Transform transform_utm_pose_;
 
+
     //! @brief Latest IMU orientation
     //!
     tf2::Transform transform_world_pose_;
@@ -207,7 +205,9 @@ class GeonavTransform
 
     //! @brief Holds the UTM->odom transform
     //!
-    tf2::Transform utm_world_transform_;
+    //tf2::Transform utm_world_transform_;
+    tf2::Transform transform_utm2odom_;
+    tf2::Transform transform_utm2odom_inverse_;
 
     //! @brief Holds the odom->UTM transform for filtered GPS broadcast
     //!
@@ -235,6 +235,11 @@ class GeonavTransform
     //! If this parameter is true, we always report 0 for the altitude of the converted GPS odometry message.
     //!
     bool zero_altitude_;
+
+    //! @brief Publisher for Nav relative to odom (datum) frame
+    ros::Publisher odom_pub_;
+    //! @brief Publisher for Nav Odometry relative to utm frame
+    ros::Publisher utm_pub_;
 };
 
 }  // namespace GeonavTransform
