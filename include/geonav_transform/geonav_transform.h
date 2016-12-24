@@ -131,15 +131,15 @@ class GeonavTransform
     //!
     Eigen::MatrixXd latest_odom_covariance_;
 
-    //! @brief Covariance for most recent GPS/UTM data
+    //! @brief Latest NAV data, stored as UTM coords
     //!
-    Eigen::MatrixXd latest_utm_covariance_;
-    Eigen::MatrixXd geonav_utm_covariance_;
-
-    //! @brief Latest GPS data, stored as UTM coords
-    //!
-    tf2::Transform latest_utm_pose_;
     tf2::Transform transform_utm2nav_;
+    tf2::Transform transform_utm2nav_inverse_;
+
+    //! @brief Covariance for latest Nav data, in UTM coords
+    //!
+    Eigen::MatrixXd transform_utm2nav_covariance_;
+    //Eigen::MatrixXd latest_utm_covariance_;
 
     //! @brief Latest odometry pose data
     //!
