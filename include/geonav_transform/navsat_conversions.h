@@ -330,4 +330,4 @@ static inline void UTMtoLL(const double UTMNorthing, const double UTMEasting,
 }  // namespace NavsatConversions
 }  // namespace GeonavTransform
 
-#endif  // ROBOT_LOCALIZATION_NAVSAT_CONVERSIONS_H
+#endif  // GEONAV_TRANSFORM_NAVSAT_CONVERSIONS_H
