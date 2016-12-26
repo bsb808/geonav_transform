@@ -48,6 +48,7 @@ The following message are published at the same rate as incoming /odometry/nav m
 
   * /odometry/odom:  A nav_msgs/Odometry message in the local odom frame (relative to the datum)
   * /odometry/utm:   A nav_msgs/Odometry message in the UTM frame
+    * This is published as a static tranform: http://wiki.ros.org/tf2_ros  http://wiki.ros.org/tf2/Tutorials/Writing%20a%20tf2%20static%20broadcaster%20(C%2B%2B)
 
 ## Published Transforms
 
