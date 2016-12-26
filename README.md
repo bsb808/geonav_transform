@@ -22,8 +22,8 @@ The use-case that motivated this project is integrating sensors that provide a G
   * ~broadcast_odom2base_transform: Whether or not to broadcast the odom->base_link tranform.  Default is True.
   * ~zero_altitude
   * ~base_link_frame_id: Default is "base_link"
-  * ~odom_frame_id: Default is "odom_link"
-  * ~utm_frame_id: Default is "utm_link"
+  * ~odom_frame_id: Default is "odom"
+  * ~utm_frame_id: Default is "utm"
 
 
 ## Subscribed Topics
