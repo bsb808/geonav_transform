@@ -39,11 +39,10 @@ add_definitions(-DEIGEN_NO_DEBUG -DEIGEN_MPL2_ONLY)
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
-
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
-# catkin_python_setup()
+catkin_python_setup()
 
 ################################################
 ## Declare ROS messages, services and actions ##
@@ -179,7 +178,6 @@ target_link_libraries(geonav_transform
 target_link_libraries(geonav_transform_node geonav_transform
    ${catkin_LIBRARIES} 
  )
-
 
 
 #############
