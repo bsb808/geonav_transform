@@ -39,6 +39,8 @@ void GeonavTransform::run()
   ros::NodeHandle nh;
   ros::NodeHandle nh_priv("~");
   
+  nav_update_time_ = ros::Time::now();
+
   // Load ROS parameters
   nh_priv.param("frequency", frequency, 10.0);
   nh_priv.param("orientation_ned", orientation_ned_, true);
@@ -156,7 +158,12 @@ void GeonavTransform::run()
     ros::spinOnce();
     // send transforms - particularly odom->base (utm->odom is static)
     broadcastTf();
-    
+
+    // Check for odometry 
+    if ( (ros::Time::now().toSec()-nav_update_time_.toSec()) > 1.0 ){
+      ROS_WARN_STREAM("Haven't received Odometry on <"
+		      << odom_sub.getTopic() << "> for 1.0 seconds!");
+    }
     rate.sleep();
   } // end of Loop
 } // end of ::run()
@@ -229,6 +236,7 @@ void GeonavTransform::navOdomCallback(const nav_msgs::OdometryConstPtr& msg)
   double utmX = 0;
   double utmY = 0;
   std::string utm_zone_tmp;
+  nav_update_time_ = ros::Time::now();
   NavsatConversions::LLtoUTM(msg->pose.pose.position.y, 
 			     msg->pose.pose.position.x, 
 			     utmY, utmX, utm_zone_tmp);
@@ -252,7 +260,15 @@ void GeonavTransform::navOdomCallback(const nav_msgs::OdometryConstPtr& msg)
   nav_in_utm_.header.stamp = nav_update_time_;
   nav_in_utm_.header.seq++;
   // Create position information using transform.
-  tf2::toMsg(transform_utm2nav_, nav_in_utm_.pose.pose);
+  // Convert from transform to pose message
+  //tf2::toMsg(transform_utm2nav_, nav_in_utm_.pose.pose);
+  tf2::Vector3 tmp;
+  tmp = transform_utm2nav_.getOrigin();
+  nav_in_utm_.pose.pose.position.x = tmp[0];
+  nav_in_utm_.pose.pose.position.y = tmp[1];
+  nav_in_utm_.pose.pose.position.z = tmp[2];
+
+    // end of test
   nav_in_utm_.pose.pose.position.z = (zero_altitude_ ? 0.0 : nav_in_utm_.pose.pose.position.z);
   // Create orientation information directy from incoming orientation
   nav_in_utm_.pose.pose.orientation = msg->pose.pose.orientation;
@@ -268,6 +284,21 @@ void GeonavTransform::navOdomCallback(const nav_msgs::OdometryConstPtr& msg)
   // Note the 'base' and 'nav' frames are the same for now
   // odom2base = odom2nav = odom2utm * utm2nav
   transform_odom2base_.mult(transform_utm2odom_inverse_,transform_utm2nav_);
+
+  ROS_DEBUG_STREAM_THROTTLE(2.0,"utm2nav X:" 
+			    << transform_utm2nav_.getOrigin()[0] 
+			    << "Y:" << transform_utm2nav_.getOrigin()[1] );
+  ROS_DEBUG_STREAM_THROTTLE(2.0,"utm2odom X:" 
+			    << transform_utm2odom_.getOrigin()[0] 
+			    << "Y:" << transform_utm2odom_.getOrigin()[1] );
+  ROS_DEBUG_STREAM_THROTTLE(2.0,"utm2odom_inverse X:" 
+			    << transform_utm2odom_inverse_.getOrigin()[0] 
+			    << "Y:" 
+			    << transform_utm2odom_inverse_.getOrigin()[1] );
+  ROS_DEBUG_STREAM_THROTTLE(2.0,"odom2base X:" 
+			    << transform_odom2base_.getOrigin()[0] 
+			    << "Y:" << transform_odom2base_.getOrigin()[1] );
+
 
   // Publish Nav odometry in odom frame - note frames are set in ::run()
   nav_in_odom_.header.stamp = nav_update_time_;
