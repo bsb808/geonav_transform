@@ -1,6 +1,6 @@
 import random
 from math import *
-import navsat_conversions as nc
+import geonav_conversions as nc
 reload(nc)
 
 lat = 36.6
