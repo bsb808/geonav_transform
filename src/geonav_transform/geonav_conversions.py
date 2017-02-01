@@ -21,7 +21,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+along with this package.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 '''
@@ -51,6 +51,22 @@ UTM_E2   = (WGS84_E*WGS84_E)    # e^2
 UTM_E4   = (UTM_E2*UTM_E2)      # e^4
 UTM_E6   = (UTM_E4*UTM_E2)      # e^6
 UTM_EP2  = (UTM_E2/(1-UTM_E2))  # e'^2
+
+
+def ll2xy(lat,lon,origin_lat,origin_lon):
+    '''
+    Convert latitude and longitude in dec. degress to x and y in meters
+    relative to the given origin location.
+    
+    Converts lat/lon and orgin to UTM and then takes the difference
+    '''
+    outmy, outmx, outmzone = LLtoUTM(origin_lat,origin_lon)
+    utmy, utmx, utmzone = LLtoUTM(lat,lon)
+    if (not (outmzone==utmzone)):
+        print('WARNING: geonav_conversion: origin and location are in different UTM zones!')
+    y = utmy-outmy
+    x = utmx-outmx
+    return (x,y) 
 
 '''*
  * Determine the correct UTM letter designator for the
