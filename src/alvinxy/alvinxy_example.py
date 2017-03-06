@@ -1,30 +1,25 @@
 '''
 Here is an example of using lat/lon along with AlvinXY coordinates.
-
-HISTORY
-2015.07.30  bsb  For the Makai UPSV tests
 '''
 
 import alvinxy
+reload(alvinxy)
+import numpy as np
 
 # Specify an origin
-org = [21.3190429, -157.6689890]
+origin = [21.3190429, -157.6689890]
 
-# LatLon --> XY
-llpnts = [[21.319496, -157.669128],
-          [21.319856, -157.668770],
-          [21.319493, -157.668305]]
+x = 10
+y = 10
+lat, lon = alvinxy.xy2ll(x,y,origin[0],origin[1])
+print ('lat: %.10f, lon:%.10f'%(lat,lon))
+xx,yy = alvinxy.ll2xy(lat,lon,origin[0],origin[1])
+print ('x: %.10f, y:%.10f'%(xx,yy))
 
-# Convert them one at a time to XY
-xypnts = alvinxy.ll2xyLL(llpnts,org)
-
-# Report the results
-for ll,xy in zip(llpnts,xypnts):
-    print ("%s --> %s"%(str(ll),str(xy)))
-
-# Now convert back to lat/lon
-ll2pnts = alvinxy.xy2llLL(xypnts,org)
-
-# Report the results
-for ll,ll2 in zip(llpnts,ll2pnts):
-    print ("%s --> %s"%(str(ll),str(ll2)))
+# Use vectorized version
+x = np.arange(1,100)
+y = np.arange(1,100)
+lat,lon = alvinxy.vxy2ll(x,y,origin[0],origin[1])
+xx,yy = alvinxy.vll2xy(lat,lon,origin[0],origin[1])
+print xx
+print yy
