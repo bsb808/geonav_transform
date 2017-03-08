@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>alvinxy.alvinxy &mdash; geonav_transform 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="geonav_transform 0.0.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">geonav_transform 0.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for alvinxy.alvinxy</h1><div class="highlight"><pre>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">AlvinXY Utility Module</span>
+
+<span class="sd">All of this is based on WHOI&#39;s original implementations in C and MATLAB.</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<div class="viewcode-block" id="mdeglat"><a class="viewcode-back" href="../../alvinxy.html#alvinxy.alvinxy.mdeglat">[docs]</a><span class="k">def</span>  <span class="nf">mdeglat</span><span class="p">(</span><span class="n">lat</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Provides meters-per-degree latitude at a given latitude</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">      lat (float): latitude</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      float: meters-per-degree value</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">latrad</span> <span class="o">=</span> <span class="n">lat</span><span class="o">*</span><span class="mf">2.0</span><span class="o">*</span><span class="n">pi</span><span class="o">/</span><span class="mf">360.0</span> <span class="p">;</span>
+
+    <span class="n">dy</span> <span class="o">=</span> <span class="mf">111132.09</span> <span class="o">-</span> <span class="mf">566.05</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="mf">2.0</span><span class="o">*</span><span class="n">latrad</span><span class="p">)</span> \
+         <span class="o">+</span> <span class="mf">1.20</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="mf">4.0</span><span class="o">*</span><span class="n">latrad</span><span class="p">)</span> \
+         <span class="o">-</span> <span class="mf">0.002</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="mf">6.0</span><span class="o">*</span><span class="n">latrad</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dy</span>
+</div>
+<div class="viewcode-block" id="mdeglon"><a class="viewcode-back" href="../../alvinxy.html#alvinxy.alvinxy.mdeglon">[docs]</a><span class="k">def</span> <span class="nf">mdeglon</span><span class="p">(</span><span class="n">lat</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Provides meters-per-degree longitude at a given latitude</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      lat (float): latitude in decimal degrees</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      float: meters per degree longitude</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">latrad</span> <span class="o">=</span> <span class="n">lat</span><span class="o">*</span><span class="mf">2.0</span><span class="o">*</span><span class="n">pi</span><span class="o">/</span><span class="mf">360.0</span> 
+    <span class="n">dx</span> <span class="o">=</span> <span class="mf">111415.13</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">latrad</span><span class="p">)</span> \
+         <span class="o">-</span> <span class="mf">94.55</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="mf">3.0</span><span class="o">*</span><span class="n">latrad</span><span class="p">)</span> \
+	<span class="o">+</span> <span class="mf">0.12</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="mf">5.0</span><span class="o">*</span><span class="n">latrad</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dx</span>
+</div>
+<div class="viewcode-block" id="ll2xy"><a class="viewcode-back" href="../../alvinxy.html#alvinxy.alvinxy.ll2xy">[docs]</a><span class="k">def</span> <span class="nf">ll2xy</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">orglat</span><span class="p">,</span> <span class="n">orglon</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    AlvinXY: Lat/Long to X/Y</span>
+<span class="sd">    Converts Lat/Lon (WGS84) to Alvin XYs using a Mercator projection.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      lat (float): Latitude of location</span>
+<span class="sd">      lon (float): Longitude of location</span>
+<span class="sd">      orglat (float): Latitude of origin location</span>
+<span class="sd">      orglon (float): Longitude of origin location</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      tuple: (x,y) where...</span>
+<span class="sd">        x is Easting in m (Alvin local grid)</span>
+<span class="sd">        y is Northing in m (Alvin local grid)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">lon</span> <span class="o">-</span> <span class="n">orglon</span><span class="p">)</span> <span class="o">*</span> <span class="n">mdeglon</span><span class="p">(</span><span class="n">orglat</span><span class="p">);</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">lat</span> <span class="o">-</span> <span class="n">orglat</span><span class="p">)</span> <span class="o">*</span> <span class="n">mdeglat</span><span class="p">(</span><span class="n">orglat</span><span class="p">);</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+
+
+</div>
+<div class="viewcode-block" id="xy2ll"><a class="viewcode-back" href="../../alvinxy.html#alvinxy.alvinxy.xy2ll">[docs]</a><span class="k">def</span> <span class="nf">xy2ll</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">orglat</span><span class="p">,</span> <span class="n">orglon</span><span class="p">):</span>
+
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    X/Y to Lat/Lon</span>
+<span class="sd">    Converts Alvin XYs to Lat/Lon (WGS84) using a Mercator projection.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      x (float): Easting in m (Alvin local grid)</span>
+<span class="sd">      x (float): Northing in m (Alvin local grid)</span>
+<span class="sd">      orglat (float): Latitude of origin location</span>
+<span class="sd">      orglon (float): Longitude of origin location</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      tuple: (lat,lon) </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">lon</span> <span class="o">=</span> <span class="n">x</span><span class="o">/</span><span class="n">mdeglon</span><span class="p">(</span><span class="n">orglat</span><span class="p">)</span> <span class="o">+</span> <span class="n">orglon</span>
+    <span class="n">lat</span> <span class="o">=</span> <span class="n">y</span><span class="o">/</span><span class="n">mdeglat</span><span class="p">(</span><span class="n">orglat</span><span class="p">)</span> <span class="o">+</span> <span class="n">orglat</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
+
+
+<span class="c"># Vectorize</span></div>
+<span class="n">vxy2ll</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">xy2ll</span><span class="p">)</span>
+<span class="n">vll2xy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">ll2xy</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">geonav_transform 0.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2017, Brian Bingham.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>alvinxy package &mdash; geonav_transform 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="geonav_transform 0.0.1 documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">geonav_transform 0.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="alvinxy-package">
+<h1>alvinxy package<a class="headerlink" href="#alvinxy-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-alvinxy.alvinxy">
+<span id="alvinxy-alvinxy-module"></span><h2>alvinxy.alvinxy module<a class="headerlink" href="#module-alvinxy.alvinxy" title="Permalink to this headline">¶</a></h2>
+<p>AlvinXY Utility Module</p>
+<p>All of this is based on WHOI&#8217;s original implementations in C and MATLAB.</p>
+<dl class="function">
+<dt id="alvinxy.alvinxy.ll2xy">
+<tt class="descclassname">alvinxy.alvinxy.</tt><tt class="descname">ll2xy</tt><big>(</big><em>lat</em>, <em>lon</em>, <em>orglat</em>, <em>orglon</em><big>)</big><a class="reference internal" href="_modules/alvinxy/alvinxy.html#ll2xy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#alvinxy.alvinxy.ll2xy" title="Permalink to this definition">¶</a></dt>
+<dd><p>AlvinXY: Lat/Long to X/Y
+Converts Lat/Lon (WGS84) to Alvin XYs using a Mercator projection.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>lat (float): Latitude of location
+lon (float): Longitude of location
+orglat (float): Latitude of origin location
+orglon (float): Longitude of origin location</dd>
+<dt>Returns:</dt>
+<dd><dl class="first last docutils">
+<dt>tuple: (x,y) where...</dt>
+<dd>x is Easting in m (Alvin local grid)
+y is Northing in m (Alvin local grid)</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="alvinxy.alvinxy.mdeglat">
+<tt class="descclassname">alvinxy.alvinxy.</tt><tt class="descname">mdeglat</tt><big>(</big><em>lat</em><big>)</big><a class="reference internal" href="_modules/alvinxy/alvinxy.html#mdeglat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#alvinxy.alvinxy.mdeglat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides meters-per-degree latitude at a given latitude</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>lat (float): latitude</dd>
+<dt>Returns:</dt>
+<dd>float: meters-per-degree value</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="alvinxy.alvinxy.mdeglon">
+<tt class="descclassname">alvinxy.alvinxy.</tt><tt class="descname">mdeglon</tt><big>(</big><em>lat</em><big>)</big><a class="reference internal" href="_modules/alvinxy/alvinxy.html#mdeglon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#alvinxy.alvinxy.mdeglon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides meters-per-degree longitude at a given latitude</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>lat (float): latitude in decimal degrees</dd>
+<dt>Returns:</dt>
+<dd>float: meters per degree longitude</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="alvinxy.alvinxy.xy2ll">
+<tt class="descclassname">alvinxy.alvinxy.</tt><tt class="descname">xy2ll</tt><big>(</big><em>x</em>, <em>y</em>, <em>orglat</em>, <em>orglon</em><big>)</big><a class="reference internal" href="_modules/alvinxy/alvinxy.html#xy2ll"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#alvinxy.alvinxy.xy2ll" title="Permalink to this definition">¶</a></dt>
+<dd><p>X/Y to Lat/Lon
+Converts Alvin XYs to Lat/Lon (WGS84) using a Mercator projection.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>x (float): Easting in m (Alvin local grid)
+x (float): Northing in m (Alvin local grid)
+orglat (float): Latitude of origin location
+orglon (float): Longitude of origin location</dd>
+<dt>Returns:</dt>
+<dd>tuple: (lat,lon)</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-alvinxy.alvinxy_example">
+<span id="alvinxy-alvinxy-example-module"></span><h2>alvinxy.alvinxy_example module<a class="headerlink" href="#module-alvinxy.alvinxy_example" title="Permalink to this headline">¶</a></h2>
+<p>Here is an example of using lat/lon along with AlvinXY coordinates.</p>
+</div>
+<div class="section" id="module-alvinxy">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-alvinxy" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">alvinxy package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-alvinxy.alvinxy">alvinxy.alvinxy module</a></li>
+<li><a class="reference internal" href="#module-alvinxy.alvinxy_example">alvinxy.alvinxy_example module</a></li>
+<li><a class="reference internal" href="#module-alvinxy">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/alvinxy.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">geonav_transform 0.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2017, Brian Bingham.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
