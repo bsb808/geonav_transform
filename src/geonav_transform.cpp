@@ -166,11 +166,11 @@ void GeonavTransform::run()
   setDatum(datum_lat, datum_lon, 0.0, quat); // alt is 0.0 for now
 
   // Publisher - Odometry relative to the odom frame
-  odom_pub_ = nh.advertise<nav_msgs::Odometry>("odometry/odom", 10);
-  utm_pub_ = nh.advertise<nav_msgs::Odometry>("odometry/utm", 10);
+  odom_pub_ = nh.advertise<nav_msgs::Odometry>("geonav_odom", 10);
+  utm_pub_ = nh.advertise<nav_msgs::Odometry>("geonav_utm", 10);
 
   // Subscriber - Odometry relative the the GPS frame
-  ros::Subscriber odom_sub = nh.subscribe("odometry/nav", 1, &GeonavTransform::navOdomCallback, this);
+  ros::Subscriber odom_sub = nh.subscribe("nav_odom", 1, &GeonavTransform::navOdomCallback, this);
   
   
   // Loop
