@@ -43,7 +43,7 @@ def mdeglon(lat):
 
 def ll2xy(lat, lon, orglat, orglon):
     '''
-    Lat/Long to X/Y
+    AlvinXY: Lat/Long to X/Y
     Converts Lat/Lon (WGS84) to Alvin XYs using a Mercator projection.
 
     Args:

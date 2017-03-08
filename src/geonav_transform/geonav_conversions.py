@@ -3,29 +3,6 @@ Python version of the inline functions defined in the robot_localization,
 navsat_conversions.h
 '''
 
-'''
-
-Copyright (c) 2017, Brian Bingham
-All rights reserved
-
-This file is part of the geonav_transform package.
-
-Geonav_transform is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Geonav_transform is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this package.  If not, see <http://www.gnu.org/licenses/>.
-
-*/
-'''
-
 from math import *
 import re
 
@@ -55,11 +32,22 @@ UTM_EP2  = (UTM_E2/(1-UTM_E2))  # e'^2
 
 def ll2xy(lat,lon,origin_lat,origin_lon):
     '''
+    Geonav: Lat/Long to X/Y
     Convert latitude and longitude in dec. degress to x and y in meters
-    relative to the given origin location.
-    
-    Converts lat/lon and orgin to UTM and then takes the difference
+    relative to the given origin location.  Converts lat/lon and orgin to UTM and then takes the difference
+
+    Args:
+      lat (float): Latitude of location
+      lon (float): Longitude of location
+      orglat (float): Latitude of origin location
+      orglon (float): Longitude of origin location
+
+    Returns:
+      tuple: (x,y) where...
+        x is Easting in m (local grid)
+        y is Northing in m  (local grid)
     '''
+
     outmy, outmx, outmzone = LLtoUTM(origin_lat,origin_lon)
     utmy, utmx, utmzone = LLtoUTM(lat,lon)
     if (not (outmzone==utmzone)):
@@ -67,6 +55,14 @@ def ll2xy(lat,lon,origin_lat,origin_lon):
     y = utmy-outmy
     x = utmx-outmx
     return (x,y) 
+
+def xy2ll(x, y, orglat, orglon):
+    '''
+    '''
+    outmy, outmx, outmzone = LLtoUTM(orglat,orglon)
+    utmy = outmy+y
+    utmx = outmx+x
+    return UTMtoLL(utmy,utmx,outmzone)
 
 '''*
  * Determine the correct UTM letter designator for the

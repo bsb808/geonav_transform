@@ -1,0 +1,28 @@
+actions: []
+authors: Brian Bingham <briansbingham@gmail.com>
+brief: ''
+bugtracker: ''
+depends:
+- nav_msgs
+- geographic_msgs
+- catkin
+- eigen
+- tf2_geometry_msgs
+- std_msgs
+- sensor_msgs
+- cmake_modules
+- python-catkin-pkg
+- robot_localization
+- rospy
+- tf2_ros
+- geometry_msgs
+- tf2
+- roscpp
+description: The geonav_transform package
+license: GPL
+maintainers: Brian Bingham <briansbingham@gmail.com>
+msgs: []
+package_type: package
+repo_url: ''
+srvs: []
+url: https://github.com/bsb808/geonav_transform
