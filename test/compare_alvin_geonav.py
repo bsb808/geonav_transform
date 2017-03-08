@@ -1,11 +1,16 @@
 '''
 Compare AlvinXY with Geonav
+
+Should be run with `ipython --pylab`
 '''
 import numpy as np
 
 from alvinxy import alvinxy as axy
+#import alvinxy.alvinxy as axy
 reload(axy)
+
 from geonav_transform import geonav_conversions as gc
+#import geonav_transform.geonav_conversions as gc
 reload(gc)
 
 # Set an origin near NPS.

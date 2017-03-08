@@ -1,18 +1,31 @@
+#!/usr/bin/env python 
+'''
+Example of using geonav_transform and alvinxy
+'''
 import geonav_transform.geonav_conversions as gc
 reload(gc)
+import alvinxy.alvinxy as axy
+reload(axy)
 
-## geonav conversions
+
 # Define a local orgin
 olat = 37.
 olon = -122.
 
+# Pick a point not too far from the origin
+lat = olat+0.01
+lon = olon+0.01
 
-# Convert a lat/lon to a local x/y
-lat = olat
-lon = olon
+# Convert to UTM
 outmy, outmx, outmzone = gc.LLtoUTM(olat,olon)
 utmy, utmx, utmzone = gc.LLtoUTM(lat,lon)
-print('Lat: %.4f, Lon:%.4f >> Y: %.1f, X: %.1f, Z:%s'%(lat,lon,utmy,utmx,utmzone))
+print('Using geonav_tranform')
+print('Convert to UTM, Lat: %.4f, Lon:%.4f >> UTMY: %.1f, UTMX: %.1f, Zone:%s'%(lat,lon,utmy,utmx,utmzone))
+
+latt, lonn = gc.UTMtoLL(utmy,utmx,utmzone)
+print('Convert back to Lat/Lon, Lat: %.4f, Lon: %.4f'%(latt,lonn))
+print('Delta, Lat: %.12f, Lon: %.12f [deg]'%(lat-latt,lon-lonn))
+
 y = utmy-outmy
 x = utmx-outmx
 
