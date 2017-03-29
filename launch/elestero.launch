@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <!-- Converts Lat/Lon from Microstrain to local X/Y -->
+  <node pkg="geonav_transform" type="geonav_transform_node" name="geonav_transform_node" clear_params="true" output="screen">
+    <!-- Datum as latitude, longitude [decimal deg.], yaw [ENU, degrees] -->
+    <rosparam param="datum">[36.595, -121.89, 0.0]</rosparam>
+    <param name="base_link_frame_id" value="base_footprint" />
+  </node>
+
+</launch>
