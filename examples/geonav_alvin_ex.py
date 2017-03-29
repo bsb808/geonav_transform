@@ -1,15 +1,18 @@
 #!/usr/bin/env python 
+'''
+Example illustrating use of local coordinate systems.
+'''
 
+# Import geonav tranformation module
 import geonav_transform.geonav_conversions as gc
 reload(gc)
+# Import AlvinXY transformation module
 import alvinxy.alvinxy as axy
 reload(axy)
 
-## geonav conversions
-# Define a local orgin
+# Define a local orgin, latitude and longitude in decimal degrees
 olat = 37.
 olon = -122.
-
 
 # Pick a point not too far from the origin
 lat = olat+0.01
