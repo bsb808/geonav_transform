@@ -1,3 +1,17 @@
+% Example of Global <-> Local coordinate transforms using
+% either geonav or alvinxy
+
+% Specify paths to the two toolboxes
+alvinpath = './alvinxy';
+geonavpath = './geonav';
+
+% Make sure to remove both paths so that only one is active at a time
+rmpath(alvinpath);
+rmpath(geonavpath);
+
+% Select which toolbox to use by commenting out one of the following 
+addpath(geonavpath); disp('**Using Geonav**');
+%addpath(alvinpath); disp('**Using AlvinXY**');
 
 % Define a local orgin, latitude and longitude in decimal degrees
 olat = 37.0;

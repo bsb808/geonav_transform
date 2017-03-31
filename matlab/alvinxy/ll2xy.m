@@ -2,7 +2,7 @@ function [x,y] = ll2xy(lat, lon, orglat, orglon)
 
 % [x,y] = ll2xy(lat, lon, orglat, orglon)
 %
-% LL2XY
+% LL2XY: AlvinXY
 % Converts Lat/Lon (WGS84) to Alvin XY's using a Mercator projection.
 %
 % INPUT
