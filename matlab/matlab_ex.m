@@ -1,5 +1,9 @@
 % Example of Global <-> Local coordinate transforms using
 % either geonav or alvinxy
+%
+% Note - since the geonav functions are MEX functions, you 
+% will need to run the make_mex.sh script to create the MEX
+% files for your particular MATLAB installation.
 
 % Specify paths to the two toolboxes
 alvinpath = './alvinxy';
