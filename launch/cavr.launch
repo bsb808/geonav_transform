@@ -3,12 +3,12 @@
 <launch>
 
   <!-- Converts Lat/Lon from Microstrain to local X/Y -->
-  <node pkg="geonav_transform" type="geonav_transform_node" name="geonav_transform_node" clear_params="true" output="screen">
+  <node pkg="geonav_transform" type="geonav_transform_node" name="geonav_transform_node" clear_params="true" output="screen" respawn="true">
     <!-- Datum as latitude, longitude [decimal deg.], yaw [ENU, degrees] -->
     <rosparam param="datum">[36.595809, -121.877209, 0.0]</rosparam>
     <!--<param name="base_link_frame_id" value="$(optenv HNAME)/base_link" />-->
     <param name="odom_frame_id" value="geonav"/>
-    <remap from="nav_odom" to="nav/odom"/>
+    <remap from="nav_odom" to="($optenv HNAME)/nav/odom"/>
   </node>
 
 </launch>
