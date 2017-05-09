@@ -170,7 +170,7 @@ void GeonavTransform::run()
   utm_pub_ = nh.advertise<nav_msgs::Odometry>("geonav_utm", 10);
 
   // Subscriber - Odometry relative the the GPS frame
-  ros::Subscriber odom_sub = nh.subscribe("nav_odom", 1, &GeonavTransform::navOdomCallback, this);
+  ros::Subscriber odom_sub = nh.subscribe("nav/odom", 1, &GeonavTransform::navOdomCallback, this);
   
   
   // Loop
