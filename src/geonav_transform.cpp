@@ -178,13 +178,16 @@ void GeonavTransform::run()
   while (ros::ok())
   {
     ros::spinOnce();
-    // send transforms - particularly odom->base (utm->odom is static)
-    broadcastTf();
 
     // Check for odometry 
     if ( (ros::Time::now().toSec()-nav_update_time_.toSec()) > 1.0 ){
       ROS_WARN_STREAM("Haven't received Odometry on <"
-		      << odom_sub.getTopic() << "> for 1.0 seconds!");
+		      << odom_sub.getTopic() << "> for 1.0 seconds!" 
+		      << " Will not broadcast transform!");
+    }
+    else{
+      // send transforms - particularly odom->base (utm->odom is static)
+      broadcastTf();
     }
     rate.sleep();
   } // end of Loop
