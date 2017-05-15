@@ -44,7 +44,11 @@ GeonavTransform::GeonavTransform() :
   utm_zone_(""),
   tf_listener_(tf_buffer_)
 {
-  // pass
+  // Initialize transforms
+  transform_odom2base_=tf2::Transform(tf2::Transform::getIdentity());
+  transform_odom2base_inverse_=tf2::Transform(tf2::Transform::getIdentity());
+  transform_utm2odom_=tf2::Transform(tf2::Transform::getIdentity());
+  transform_utm2odom_inverse_=tf2::Transform(tf2::Transform::getIdentity());
 }
 
 GeonavTransform::~GeonavTransform()
