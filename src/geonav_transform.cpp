@@ -201,7 +201,13 @@ void GeonavTransform::broadcastTf(void)
 {
   transform_msg_odom2base_.header.stamp = ros::Time::now();
   transform_msg_odom2base_.header.seq++;
-  transform_msg_odom2base_.transform = tf2::toMsg(transform_odom2base_);
+  // For Hydo
+  //transform_msg_odom2base_.transform = tf2::toMsg(transform_odom2base_);
+  transform_msg_odom2base_.transform.translation.x = transform_odom2base_.getOrigin()[0];
+    //transform_msg_odom2base_.transform.translation.y
+    //transform_msg_odom2base_.transform.translation.z
+    //transform_msg_odom2base_.transform.rotation.x
+
   tf_broadcaster_.sendTransform(transform_msg_odom2base_);
 }
 bool GeonavTransform::setDatum(double lat, double lon, double alt, 
@@ -236,7 +242,7 @@ bool GeonavTransform::setDatum(double lat, double lon, double alt,
   // Send out static UTM transform - frames are specified in ::run()
   transform_msg_utm2odom_.header.stamp = ros::Time::now();
   transform_msg_utm2odom_.header.seq++;
-  transform_msg_utm2odom_.transform = tf2::toMsg(transform_utm2odom_);
+  //transform_msg_utm2odom_.transform = tf2::toMsg(transform_utm2odom_);
   transform_msg_utm2odom_.transform.translation.z = (zero_altitude_ ? 0.0 : transform_msg_utm2odom_.transform.translation.z);
   utm_broadcaster_.sendTransform(transform_msg_utm2odom_);
 
@@ -333,7 +339,9 @@ void GeonavTransform::navOdomCallback(const nav_msgs::OdometryConstPtr& msg)
   nav_in_odom_.header.stamp = nav_update_time_;
   nav_in_odom_.header.seq++;
   // Position from transform
+  // Hydro
   tf2::toMsg(transform_odom2base_, nav_in_odom_.pose.pose);
+
   nav_in_odom_.pose.pose.position.z = (zero_altitude_ ? 0.0 : nav_in_odom_.pose.pose.position.z);
   // Orientation and twist are uneffected
   nav_in_odom_.pose.pose.orientation = msg->pose.pose.orientation;
