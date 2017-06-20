@@ -32,6 +32,26 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace GeonavTransform
 {
+
+void transformTF2ToMsg(const tf2::Transform& tf2, geometry_msgs::Transform& msg)
+{
+  msg.translation.x = tf2.getOrigin().x();
+  msg.translation.y = tf2.getOrigin().y();
+  msg.translation.z = tf2.getOrigin().z();
+  msg.rotation.x = tf2.getRotation().x();
+  msg.rotation.y = tf2.getRotation().y();
+  msg.rotation.z = tf2.getRotation().z();
+  msg.rotation.w = tf2.getRotation().w();
+}
+
+void transformTF2ToMsg(const tf2::Transform& tf2, geometry_msgs::TransformStamped& msg, ros::Time stamp, const std::string& frame_id, const std::string& child_frame_id)
+{
+  transformTF2ToMsg(tf2, msg.transform);
+  msg.header.stamp = stamp;
+  msg.header.frame_id = frame_id;
+  msg.child_frame_id = child_frame_id;
+}
+
 GeonavTransform::GeonavTransform() :
   // Initialize attributes
   broadcast_utm2odom_transform_(true),
@@ -203,6 +223,7 @@ void GeonavTransform::broadcastTf(void)
   transform_msg_odom2base_.header.seq++;
   // For Hydo
   //transform_msg_odom2base_.transform = tf2::toMsg(transform_odom2base_);
+  transformTF2ToMsg(transform_odom2base_,transform_msg_odom2base_.transform);
   transform_msg_odom2base_.transform.translation.x = transform_odom2base_.getOrigin()[0];
     //transform_msg_odom2base_.transform.translation.y
     //transform_msg_odom2base_.transform.translation.z
