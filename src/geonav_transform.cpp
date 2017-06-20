@@ -340,7 +340,7 @@ void GeonavTransform::navOdomCallback(const nav_msgs::OdometryConstPtr& msg)
   nav_in_odom_.header.seq++;
   // Position from transform
   // Hydro
-  tf2::toMsg(transform_odom2base_, nav_in_odom_.pose.pose);
+  //tf2::toMsg(transform_odom2base_, nav_in_odom_.pose.pose);
 
   nav_in_odom_.pose.pose.position.z = (zero_altitude_ ? 0.0 : nav_in_odom_.pose.pose.position.z);
   // Orientation and twist are uneffected
