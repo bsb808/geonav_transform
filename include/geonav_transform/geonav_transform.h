@@ -42,6 +42,14 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 namespace GeonavTransform
 {
 
+// These two functions come directly form the Jade distro fof tf2 buffer_core
+// Not available for Hyro, so putting them here.
+  void transformTF2ToMsg(const tf2::Transform& tf2, geometry_msgs::Transform& msg);
+
+void transformTF2ToMsg(const tf2::Transform& tf2, geometry_msgs::TransformStamped& msg, ros::Time stamp, const std::string& frame_id, const std::string& child_frame_id);
+
+void transformTF2ToPoseMsg(const tf2::Transform& tf2, geometry_msgs::Pose& msg);
+
 class GeonavTransform
 {
   public:

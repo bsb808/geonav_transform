@@ -33,6 +33,17 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 namespace GeonavTransform
 {
 
+void transformTF2ToPoseMsg(const tf2::Transform& tf2, geometry_msgs::Pose& msg)
+{
+  msg.position.x = tf2.getOrigin().x();
+  msg.position.y = tf2.getOrigin().y();
+  msg.position.z = tf2.getOrigin().z();
+  msg.orientation.x = tf2.getRotation().x();
+  msg.orientation.y = tf2.getRotation().y();
+  msg.orientation.z = tf2.getRotation().z();
+  msg.orientation.w = tf2.getRotation().w();
+}
+
 void transformTF2ToMsg(const tf2::Transform& tf2, geometry_msgs::Transform& msg)
 {
   msg.translation.x = tf2.getOrigin().x();
@@ -221,13 +232,10 @@ void GeonavTransform::broadcastTf(void)
 {
   transform_msg_odom2base_.header.stamp = ros::Time::now();
   transform_msg_odom2base_.header.seq++;
-  // For Hydo
+  // For Hydo - change from...
   //transform_msg_odom2base_.transform = tf2::toMsg(transform_odom2base_);
+  // To...
   transformTF2ToMsg(transform_odom2base_,transform_msg_odom2base_.transform);
-  transform_msg_odom2base_.transform.translation.x = transform_odom2base_.getOrigin()[0];
-    //transform_msg_odom2base_.transform.translation.y
-    //transform_msg_odom2base_.transform.translation.z
-    //transform_msg_odom2base_.transform.rotation.x
 
   tf_broadcaster_.sendTransform(transform_msg_odom2base_);
 }
@@ -317,14 +325,9 @@ void GeonavTransform::navOdomCallback(const nav_msgs::OdometryConstPtr& msg)
   nav_in_utm_.header.seq++;
   // Create position information using transform.
   // Convert from transform to pose message
-  //tf2::toMsg(transform_utm2nav_, nav_in_utm_.pose.pose);
-  tf2::Vector3 tmp;
-  tmp = transform_utm2nav_.getOrigin();
-  nav_in_utm_.pose.pose.position.x = tmp[0];
-  nav_in_utm_.pose.pose.position.y = tmp[1];
-  nav_in_utm_.pose.pose.position.z = tmp[2];
-
-    // end of test
+  nav_in_utm_.pose.pose.position.x = transform_utm2nav_.getOrigin().x();
+  nav_in_utm_.pose.pose.position.y = transform_utm2nav_.getOrigin().y();
+  nav_in_utm_.pose.pose.position.z = transform_utm2nav_.getOrigin().z();
   nav_in_utm_.pose.pose.position.z = (zero_altitude_ ? 0.0 : nav_in_utm_.pose.pose.position.z);
   // Create orientation information directy from incoming orientation
   nav_in_utm_.pose.pose.orientation = msg->pose.pose.orientation;
@@ -361,7 +364,10 @@ void GeonavTransform::navOdomCallback(const nav_msgs::OdometryConstPtr& msg)
   nav_in_odom_.header.seq++;
   // Position from transform
   // Hydro
+  // From...
   //tf2::toMsg(transform_odom2base_, nav_in_odom_.pose.pose);
+  // To ...
+  transformTF2ToPoseMsg(transform_odom2base_,nav_in_odom_.pose.pose);
 
   nav_in_odom_.pose.pose.position.z = (zero_altitude_ ? 0.0 : nav_in_odom_.pose.pose.position.z);
   // Orientation and twist are uneffected
