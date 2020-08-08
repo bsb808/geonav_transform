@@ -1,5 +1,3 @@
-CURRENTLY UNDER DEVELOPMENT!
-
 # geonav_transform
 
 The goal of this package is to simplify the integration of accurate/precise geographic navigation information (typically from a sensor) into the ROS localization and navigation workflows.  To those ends, the geonav_tranform_node can perform the following functions:
