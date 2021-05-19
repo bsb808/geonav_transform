@@ -57,7 +57,6 @@ GeonavTransform::~GeonavTransform()
 
 void GeonavTransform::run()
 {
-  ros::Time::init();
   
   double frequency = 10.0;
   double delay = 0.0;
