@@ -57,13 +57,34 @@ GeonavTransform::~GeonavTransform()
 
 void GeonavTransform::run()
 {
-  ros::Time::init();
+  
   
   double frequency = 10.0;
   double delay = 0.0;
   
   ros::NodeHandle nh;
   ros::NodeHandle nh_priv("~");
+
+  // TIME
+  //ros::Time::init();
+  // It seems to take a few cycles for the simulation time to kick in
+  bool use_sim_time = true;
+  nh.param<bool>("use_sim_time", use_sim_time, "false");
+  double time_sec;
+  if (use_sim_time)
+  {
+    ROS_INFO("Using sim_time, so verifying that time is in bounds");
+    time_sec = ros::Time::now().toSec();
+    while (time_sec > 1.0e5)
+    {
+      ROS_WARN_STREAM("ROS time is too high for sim_time <" << time_sec
+		      << ">.  Waiting a bit and trying again.");
+      time_sec = ros::Time::now().toSec();
+      ros::Duration(0.5).sleep(); // sleep for half a second
+    }
+    // One more time for good measure.
+    ros::Duration(0.5).sleep();
+  }
   
   nav_update_time_ = ros::Time::now();
 
@@ -175,14 +196,13 @@ void GeonavTransform::run()
 
   // Subscriber - Odometry relative the the GPS frame
   ros::Subscriber odom_sub = nh.subscribe("nav_odom", 1, &GeonavTransform::navOdomCallback, this);
-  
-  
+
   // Loop
   ros::Rate rate(frequency);
+  int cnt = 0;
   while (ros::ok())
   {
     ros::spinOnce();
-
     // Check for odometry 
     if ( (ros::Time::now().toSec()-nav_update_time_.toSec()) > 1.0 ){
       ROS_WARN_STREAM("Haven't received Odometry on <"
