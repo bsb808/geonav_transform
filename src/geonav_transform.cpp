@@ -83,20 +83,51 @@ void GeonavTransform::run()
   double datum_yaw;
   tf2::Quaternion quat = tf2::Quaternion::getIdentity();
 
-  if (! nh_priv.hasParam("datum"))
+  if ( (! nh_priv.hasParam("datum")) && (! nh.hasParam("/geonav_datum")) )
   {
-    ROS_ERROR("ERROR <datum> parameter is not supplied in "
+    ROS_FATAL("Neither global </geonav_datum> "
+	      "nor private <datum> parameter is not supplied in "
 	      "geonav_transform configuration");
-    ROS_ERROR("Setting to 0,0,0 which is non-ideal!");
-    datum_lat = datum_lon = datum_yaw = 0.0;
+    exit(1);
   }
-  else
+  else 
   {
     XmlRpc::XmlRpcValue datum_config;
+    if ( nh.hasParam("/geonav_datum") )
+    {
+      if ( nh_priv.hasParam("datum") )
+      {
+	ROS_ERROR("Both global </geonav_datum> and private <datum> parameter"
+		 "are supplied.  Using the global parameter.");
+      }
+      try
+      {
+	nh.getParam("/geonav_datum", datum_config);
+      }
+      catch (XmlRpc::XmlRpcException &e)
+      {
+	ROS_FATAL_STREAM("ERROR geonav_datum config: " << e.getMessage() <<
+			 " for geonav_transform (type: " 
+			 << datum_config.getType() << ")");
+	exit(1);
+      }
+    }
+    else
+    {	
+      try
+      {
+	nh_priv.getParam("datum", datum_config);
+      }
+      catch (XmlRpc::XmlRpcException &e)
+      {
+	ROS_FATAL_STREAM("ERROR datum config: " << e.getMessage() <<
+			 " for geonav_transform (type: " 
+			 << datum_config.getType() << ")");
+	exit(1);
+      }
+    }
     try
     {
-      nh_priv.getParam("datum", datum_config);
-      
       /* Handle datum specification. 
 	 Users should always specify a baseLinkFrameId_ in the
 	 datum config, but we had a release where it wasn't used, 
@@ -119,11 +150,10 @@ void GeonavTransform::run()
     }
     catch (XmlRpc::XmlRpcException &e)
     {
-      ROS_ERROR_STREAM("ERROR datum config: " << e.getMessage() <<
+      ROS_FATAL_STREAM("ERROR datum config: " << e.getMessage() <<
 		       " for geonav_transform (type: " 
 		       << datum_config.getType() << ")");
-      ROS_ERROR("Setting to 0,0,0 which is non-ideal!");
-      datum_lat = datum_lon = datum_yaw = 0.0;
+      exit(1);
     }
     
     // Tell everyone we are ignoring yaw in the datum
@@ -239,6 +269,7 @@ bool GeonavTransform::setDatum(double lat, double lon, double alt,
   transform_msg_utm2odom_.transform.translation.z = (zero_altitude_ ? 0.0 : transform_msg_utm2odom_.transform.translation.z);
   utm_broadcaster_.sendTransform(transform_msg_utm2odom_);
 
+  return true;
 } // end setDatum
 
 void GeonavTransform::navOdomCallback(const nav_msgs::OdometryConstPtr& msg)
