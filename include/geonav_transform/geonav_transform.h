@@ -87,6 +87,11 @@ class GeonavTransform
     //!
     void navOdomCallback(const nav_msgs::OdometryConstPtr& msg);
 
+    //! @brief Callback for odom in geo frame
+    //! @param[in] msg The odometry message to process
+    //!
+    void geoOdomCallback(const nav_msgs::OdometryConstPtr& msg);
+
     //! @brief Sends transform
     void broadcastTf(void);
 
@@ -129,6 +134,9 @@ class GeonavTransform
     tf2::Transform transform_utm2nav_;
     tf2::Transform transform_utm2nav_inverse_;
 
+  tf2::Transform transform_odom2nav_;
+    tf2::Transform transform_odom2nav_inverse_;
+
     //! @brief Transform buffer for managing coordinate transforms
     //!
     tf2_ros::Buffer tf_buffer_;
@@ -164,6 +172,7 @@ class GeonavTransform
     //! @brief Messages
     geometry_msgs::TransformStamped transform_msg_odom2base_;
     nav_msgs::Odometry nav_in_utm_;
+    nav_msgs::Odometry nav_in_geo_;
 
     //! @brief UTM zone as determined after transforming GPS message
     //!
@@ -175,10 +184,12 @@ class GeonavTransform
     //!
     bool zero_altitude_;
 
-    //! @brief Publisher for Nav relative to odom (datum) frame
+    //! @brief Publisher of Nav relative to odom (datum) frame
     ros::Publisher odom_pub_;
-    //! @brief Publisher for Nav Odometry relative to utm frame
+    //! @brief Publisher of Nav Odometry relative to utm frame
     ros::Publisher utm_pub_;
+    //! @brief Publisher of Geo Odometry relative to geo frame
+    ros::Publisher geo_pub_;
 
 
 };
