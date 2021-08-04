@@ -408,8 +408,8 @@ void GeonavTransform::geoOdomCallback(const nav_msgs::OdometryConstPtr& msg)
 			     lat, lon);
     
   nav_in_geo_.header.stamp = ros::Time::now();
-  nav_in_geo_.pose.pose.position.x = lat;
-  nav_in_geo_.pose.pose.position.y = lon;
+  nav_in_geo_.pose.pose.position.x = lon;
+  nav_in_geo_.pose.pose.position.y = lat;
   nav_in_geo_.pose.pose.position.z = 0.0;
   // Create orientation information directy from incoming orientation
   nav_in_geo_.pose.pose.orientation = msg->pose.pose.orientation;
